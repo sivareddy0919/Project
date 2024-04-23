@@ -31,7 +31,16 @@ const GlucoseTracker = () => {
   const handleProfileNavigation = () => {
     navigation.navigate('Patientprofile'); // Navigate to PatientProfile screen
   };
+
+  const handlesignOutIconClick = () => {
+    navigation.navigate('Patientlogin');
     
+  };
+     
+  const handleBellIconClick = () => {
+    navigation.navigate('PatientNotification');
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.topContainer}>
@@ -55,13 +64,13 @@ const GlucoseTracker = () => {
           {/* Content of the additional container */}
           <View style={styles.horizontalButtonsContainer}>
             <TouchableOpacity style={styles.additionalButton}>
-              <Text style={styles.buttonText}> Today</Text>
+              <Text style={styles.buttonText}>T</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.additionalButton}>
-              <Text style={styles.buttonText}>Yesterday</Text>
+              <Text style={styles.buttonText}>Y</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.additionalButton}>
-              <Text style={styles.buttonText}>Select Date</Text>
+              <Text style={styles.buttonText}>D</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -75,8 +84,8 @@ const GlucoseTracker = () => {
         <View style={styles.additionalGrayContainer}>
           {/* Content of the additional gray container */}
           <FontAwesome name="home" size={35} style={styles.homeIcon} />
-          <FontAwesome name="bell" size={30} style={styles.bellIcon} />
-          <FontAwesome name="sign-out" size={35} style={styles.signOutIcon} />
+          <FontAwesome name="bell" size={30} style={styles.bellIcon} onPress={handleBellIconClick} />
+          <FontAwesome name="sign-out" size={35} style={styles.signOutIcon} onPress={handlesignOutIconClick} />
         </View>
         {/* End of New Container */}
         <TouchableOpacity onPress={handleViewGlucoseEntry} style={[styles.button, styles.GlucoseEntryButton]}>
@@ -181,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BBB7B7',
     borderRadius: 10,
     width: '50%',
-    paddingVertical: windowHeight * 0.070,
+    paddingVertical: windowHeight * 0.080,
     paddingHorizontal: windowWidth * 0.40,
     bottom: windowHeight * 0.030,
     top: windowHeight * 0.003,
@@ -225,6 +234,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 30, // Adjust the font size as needed
     fontWeight: 'bold',
+    left: windowWidth* 0.28,
   },
   profileIcon: {
     color: '#000000',
@@ -238,7 +248,7 @@ const styles = StyleSheet.create({
     left:windowWidth *-0.33,
   },
   additionalButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#D73636',
     borderRadius: 10,
     paddingVertical: windowHeight * 0.0100,
     paddingHorizontal: windowWidth * 0.03,
