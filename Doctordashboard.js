@@ -30,11 +30,6 @@ const GlucoseTracker = () => {
       <View style={styles.container}>
         <View style={styles.upperContainer}>
           {/* Container above the buttons */}
-          <View style={styles.scrollImagesContainer}>
-            <Image source={require('./assets/scroll1.png')} style={[styles.scrollImage]} /> 
-            <Image source={require('./assets/scroll2.png')} style={[styles.scrollImage]} />
-            <Image source={require('./assets/scroll3.png')} style={[styles.scrollImage]} />
-          </View>
         </View>
         {/* New Container */}
         <View style={styles.additionalContainer}>
@@ -102,34 +97,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#BBB7B7',
     borderRadius: 10,
     width: '50%',
-    paddingVertical: windowHeight * 0.030,
+    paddingVertical: windowHeight * 0.090,
     paddingHorizontal: windowWidth * 0.40,
     top: windowHeight * 0.04,
-  },
-  scrollImagesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: windowWidth * 0.25, 
-    height: windowWidth * 0.25,
-    paddingHorizontal: windowWidth * 0.01, // Adjusted padding
-  },
-  scrollImage: {
-    resizeMode: 'contain',
-    width: windowWidth * 0.25, 
-    height: windowWidth * 0.25,
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: windowHeight * 0.030,
-  },
-  scrollView: {
-    flex: 1,
-    marginBottom: windowHeight * 0.02,
-  },
-  entryText: {
-    fontSize: windowHeight * 0.030,
-    marginBottom: windowHeight * 0.01,
   },
   additionalContainer: {
     marginBottom: windowHeight * 0.06, // Adjust the marginBottom to provide spacing between the container and buttons
@@ -176,8 +151,8 @@ const styles = StyleSheet.create({
     height: 40, // Adjust height of the icon
     marginRight: 10, // Adjust spacing between icons if needed
     color: '#000000', // Color of the search icon
-    top: windowHeight * -0.022,
-    left: windowWidth * -0.04,
+    top: windowHeight * -0.023,
+    left: windowWidth * -0.03,
   },
   signOutIcon: {
     width: 40, // Adjust width of the icon
