@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 30, // Adjust the font size as needed
     fontWeight: 'bold',
+    left:windowWidth* 0.26,
   },
   profileIcon: {
     color: '#000000',
