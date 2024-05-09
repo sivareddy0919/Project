@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Import FontAwesome icons
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation, useRoute } from '@react-navigation/native'; // Import useNavigation and useRoute hooks
 
 const GlucoseTracker = () => {
   const navigation = useNavigation(); // Initialize navigation object
+  const route = useRoute(); // Initialize route object
+  const { username } = route.params; // Extract username from route params
   const [glucoseEntries, setGlucoseEntries] = useState([]);
   const [glucoseLevel, setGlucoseLevel] = useState('');
 
@@ -34,7 +36,6 @@ const GlucoseTracker = () => {
 
   const handlesignOutIconClick = () => {
     navigation.navigate('Patientlogin');
-    
   };
      
   const handleBellIconClick = () => {
@@ -45,7 +46,7 @@ const GlucoseTracker = () => {
     <View style={styles.mainContainer}>
       <View style={styles.topContainer}>
         {/* Content of the container at the top */}
-        <Text style={styles.heading}>Glucose</Text>
+        <Text style={styles.heading}>{username}</Text>
         <TouchableOpacity onPress={handleProfileNavigation}>
           <FontAwesome name="user-circle-o" size={35} style={styles.profileIcon} />
         </TouchableOpacity>
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 30, // Adjust the font size as needed
     fontWeight: 'bold',
-    left: windowWidth* 0.28,
+    left: windowWidth* 0.22,
   },
   profileIcon: {
     color: '#000000',
