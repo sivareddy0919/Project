@@ -60,35 +60,28 @@ const GlucoseTracker = () => {
             <Image source={require('./assets/scroll3.png')} style={[styles.scrollImage]} />
           </View>
         </View>
-        {/* New Container */}
-        <View style={styles.additionalContainer}>
-          {/* Content of the additional container */}
-          <View style={styles.horizontalButtonsContainer}>
-            <TouchableOpacity style={styles.additionalButton}>
-              <Text style={styles.buttonText}>T</Text>
+        {/* Gray-colored container */}
+        <View style={styles.grayContainer}>
+          {/* Content of the gray container */}
+          <View style={styles.circleButtonContainer}>
+            <TouchableOpacity style={[styles.circleButton, {backgroundColor: '#D73636', width: 80, height: 80, borderRadius: 10}]}>
+              <Text style={[styles.buttonText, {fontSize: 14}]}>Today</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.additionalButton}>
-              <Text style={styles.buttonText}>Y</Text>
+            <TouchableOpacity style={[styles.circleButton, {backgroundColor: '#36D7D7', width: 80, height: 80, borderRadius: 10}]}>
+              <Text style={[styles.buttonText, {fontSize: 14}]}>Yesterday</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.additionalButton}>
-              <Text style={styles.buttonText}>D</Text>
+            <TouchableOpacity style={[styles.circleButton, {backgroundColor: '#36D736', width: 80, height: 80, borderRadius: 10}]}>
+              <Text style={[styles.buttonText, {fontSize: 14}]}>Date</Text>
             </TouchableOpacity>
           </View>
         </View>
-        {/* End of New Container */}
-        {/* New Container */}
-        <View style={styles.grayContainer}>
-          {/* Content of the gray container */}
-        </View>
-        {/* End of New Container */}
-        {/* New Container */}
+        {/* End of Gray-colored container */}
         <View style={styles.additionalGrayContainer}>
           {/* Content of the additional gray container */}
           <FontAwesome name="home" size={35} style={styles.homeIcon} />
           <FontAwesome name="bell" size={30} style={styles.bellIcon} onPress={handleBellIconClick} />
           <FontAwesome name="sign-out" size={35} style={styles.signOutIcon} onPress={handlesignOutIconClick} />
         </View>
-        {/* End of New Container */}
         <TouchableOpacity onPress={handleViewGlucoseEntry} style={[styles.button, styles.GlucoseEntryButton]}>
           <Text style={styles.buttonText}>Glucose Entry</Text>
         </TouchableOpacity>
@@ -186,17 +179,6 @@ const styles = StyleSheet.create({
     fontSize: windowHeight * 0.030,
     marginBottom: windowHeight * 0.01,
   },
-  additionalContainer: {
-    marginBottom: windowHeight * 0.03, // Adjust the marginBottom to provide spacing between the container and buttons
-    backgroundColor: '#BBB7B7',
-    borderRadius: 10,
-    width: '50%',
-    paddingVertical: windowHeight * 0.080,
-    paddingHorizontal: windowWidth * 0.40,
-    bottom: windowHeight * 0.030,
-    top: windowHeight * 0.003,
-    // styles for additional container
-  },
   additionalGrayContainer: {
     backgroundColor: '#D73636',
     borderRadius: 20,
@@ -204,9 +186,32 @@ const styles = StyleSheet.create({
     paddingVertical: windowHeight * -0.01,
     paddingHorizontal: windowWidth * 0.40,
     marginBottom: windowHeight * 0.025,
-    top: windowHeight * 0.32,
+    top: windowHeight * 0.27,
     height: windowHeight* 0.09,
     // styles for additional gray container
+  },
+  grayContainer: {
+    backgroundColor: '#BBB7B7',
+    width: '88%',
+    borderRadius: 10,
+    paddingVertical: windowHeight * -0.1,
+    height: windowHeight * 0.2, // Adjust height as needed
+    marginBottom: windowHeight * 0.02,
+  },
+  circleButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: windowHeight * 0.05,
+  },
+  circleButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 999,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   homeIcon: {
     width: 40, // Adjust width of the icon
@@ -235,28 +240,11 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 30, // Adjust the font size as needed
     fontWeight: 'bold',
-    left: windowWidth* 0.22,
+    left: windowWidth* 0.34,
   },
   profileIcon: {
     color: '#000000',
     marginLeft: 'auto', // Push the icon to the right side
-  },
-  horizontalButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: windowWidth * -0.1,
-    marginTop: windowHeight * -0.3,
-    left:windowWidth *-0.33,
-  },
-  additionalButton: {
-    backgroundColor: '#D73636',
-    borderRadius: 10,
-    paddingVertical: windowHeight * 0.0100,
-    paddingHorizontal: windowWidth * 0.03,
-    alignItems: 'center',
-    top: windowHeight*0.25,
-    height: 70, 
-    width: 80,
   },
 });
 
