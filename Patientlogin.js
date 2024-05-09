@@ -9,7 +9,7 @@ const PatientLogin = () => {
 
   const handleLogin = () => {
     // Perform your login logic here
-    const loginApiUrl = 'http://192.168.3.121/database/Patientlogin.php';
+    const loginApiUrl = 'http://192.168.229.121/database/Patientlogin.php';
     
     fetch(loginApiUrl, {
       method: 'POST',
@@ -23,7 +23,7 @@ const PatientLogin = () => {
         console.log('Login Response:', data);
         if (data.status === 'success') {
           Alert.alert('Login successful!');
-          navigation.navigate('Duplicate'); // Navigate to the Dashboard screen
+          navigation.navigate('Duplicate', { username}); // Navigate to the Duplicate screen with username parameter
         } else {
           Alert.alert('Invalid username or password. Please try again.');
         }
