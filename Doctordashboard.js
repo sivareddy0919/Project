@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Import FontAwesome icons
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation, useRoute } from '@react-navigation/native'; // Import useNavigation and useRoute hooks
 
 const GlucoseTracker = () => {
   const navigation = useNavigation(); // Initialize navigation object
+  const route = useRoute(); // Initialize route object to access parameters
+  const { username } = route.params; // Extract username from route parameters
+
   const [glucoseEntries, setGlucoseEntries] = useState([]);
   const [glucoseLevel, setGlucoseLevel] = useState('');
 
   const handleProfileNavigation = () => {
     navigation.navigate('Doctorprofile'); 
   };
-
-  const handleSignOut = () => {
+  const handlesearchIconClick = () => {
+    navigation.navigate('DoctorSearch');
+  };
+  const handlesignOutIconClick = () => {
     // Logic for signing out
     // Navigate to Doctor login page
     navigation.navigate('Doctorlogin'); 
@@ -21,8 +26,8 @@ const GlucoseTracker = () => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.topContainer}>
-        {/* Content of the container at the top */}
-        <Text style={styles.heading}>Welcome</Text>
+        {/* Display username in the top container */}
+        <Text style={styles.heading}>{username}</Text>
         <TouchableOpacity onPress={handleProfileNavigation}>
           <FontAwesome name="user-circle-o" size={35} style={styles.profileIcon} />
         </TouchableOpacity>
@@ -45,8 +50,8 @@ const GlucoseTracker = () => {
         <View style={styles.additionalGrayContainer}>
           {/* Content of the additional gray container */}
           <FontAwesome name="home" size={35} style={styles.homeIcon} />
-          <FontAwesome name="search" size={32} style={styles.searchIcon} />
-          <FontAwesome name="sign-out" size={35} style={styles.signOutIcon} />
+          <FontAwesome name="search" size={32} style={styles.searchIcon} onPress={handlesearchIconClick} />
+          <FontAwesome name="sign-out" size={35} style={styles.signOutIcon} onPress={handlesignOutIconClick} />
         </View>
         {/* End of New Container */}
         {/* New Container */}
@@ -151,7 +156,7 @@ const styles = StyleSheet.create({
     height: 40, // Adjust height of the icon
     marginRight: 10, // Adjust spacing between icons if needed
     color: '#000000', // Color of the search icon
-    top: windowHeight * -0.023,
+    top: windowHeight * -0.025,
     left: windowWidth * -0.03,
   },
   signOutIcon: {
@@ -163,13 +168,14 @@ const styles = StyleSheet.create({
     top: windowHeight * -0.077,
   },
   heading: {
-    fontSize: 30, // Adjust the font size as needed
+    fontSize: 24, // Adjust the font size as needed
     fontWeight: 'bold',
-    left:windowWidth* 0.26,
+    left:windowWidth* 0.16,
   },
   profileIcon: {
     color: '#000000',
     marginLeft: 'auto', // Push the icon to the right side
+    right:windowWidth *0.77,
   },
 });
 
