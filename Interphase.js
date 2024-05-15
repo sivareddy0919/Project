@@ -51,10 +51,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
   },
   circle: {
-    backgroundColor: '#ffff',
+    backgroundColor: '#FFFFFF',
     marginBottom: windowHeight * 0.03,
     justifyContent: 'center',
     alignItems: 'center',
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
     borderRadius: (windowWidth * 0.4) / 2,
   },
   button: {
-    backgroundColor: '#D73636',
-    borderRadius: 25,
+    backgroundColor: '#603F83FF',
+    borderRadius: 18,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    width: '60%',
+    width: '55%',
     marginBottom: windowHeight * 0.03,
     alignItems: 'center',
   },
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
     marginVertical: windowHeight * 0.05,
   },
   image: {
-    width: windowWidth * 0.3,
-    height: windowWidth * 0.3,
+    width: windowWidth * 0.35,
+    height: windowWidth * 0.35,
     resizeMode: 'contain',
   },
 });
