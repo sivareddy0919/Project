@@ -4,8 +4,22 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
-// Include database connection
-require "Phpconncetion.php"; // Connect to the database
+// Database connection details
+$servername = "localhost"; // Your database host
+$username = "root"; // Your database username
+$password = ""; // Your database password
+$database = "mobile"; // Your database name
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Initialize response array
+$response = array();
 
 // Get the raw POST data as a string
 $json_data = file_get_contents("php://input");
@@ -20,22 +34,21 @@ if (isset($request_data['username']) && isset($request_data['password'])) {
     $password = $request_data['password'];
 
     // Query to check login credentials using prepared statements
-    $sql = "SELECT * FROM patient WHERE `username` = :username AND `password` = :password";
+    $sql = "SELECT * FROM patient WHERE `username` = ? AND `password` = ?";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         $response['status'] = "error";
         $response['message'] = "Database error: " . $conn->error;
     } else {
         // Bind parameters
-        $stmt->bindValue(':username', $username, PDO::PARAM_STR);
-        $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+        $stmt->bind_param('ss', $username, $password);
 
         // Execute the prepared statement
         if (!$stmt->execute()) {
             $response['status'] = "error";
-            $response['message'] = "Execution error: " . $stmt->errorInfo()[2]; // Get detailed error message
+            $response['message'] = "Execution error: " . $stmt->error;
         } else {
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->get_result()->fetch_assoc();
 
             // Check if login credentials are valid
             if ($result) {
@@ -50,7 +63,7 @@ if (isset($request_data['username']) && isset($request_data['password'])) {
         }
 
         // Close the prepared statement
-        $stmt->closeCursor();
+        $stmt->close();
     }
 } else {
     // Handle the case where 'username' or 'password' is missing
@@ -59,7 +72,7 @@ if (isset($request_data['username']) && isset($request_data['password'])) {
 }
 
 // Close the database connection
-$conn = null;
+$conn->close();
 
 // Respond with JSON
 echo json_encode($response);
