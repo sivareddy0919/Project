@@ -22,7 +22,7 @@ const PatientSignup = () => {
     }
 
     // Here you can make an API request to submit the form data to the server
-    const signupApiUrl = 'http://192.168.3.121/database/Patientsignup.php'; // Update URL for sign-up endpoint
+    const signupApiUrl = 'http://172.18.21.9/Database/Patientsignup.php'; // Update URL for sign-up endpoint
     
     fetch(signupApiUrl, {
       method: 'POST',
