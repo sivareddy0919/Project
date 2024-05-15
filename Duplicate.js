@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Import FontAwesome icons
 import { useNavigation, useRoute } from '@react-navigation/native'; // Import useNavigation and useRoute hooks
@@ -9,6 +9,18 @@ const GlucoseTracker = () => {
   const { username } = route.params; // Extract username from route params
   const [glucoseEntries, setGlucoseEntries] = useState([]);
   const [glucoseLevel, setGlucoseLevel] = useState('');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Scroll images programmatically
+      scrollViewRef.current?.scrollTo({ x: currentScrollPos + 1, animated: true });
+    }, 1000); // Scroll every 1 second
+
+    return () => clearInterval(interval); // Clean up interval on unmount
+  }, []);
+
+  const scrollViewRef = React.useRef();
+  const [currentScrollPos, setCurrentScrollPos] = useState(0);
 
   const handleAddGlucose = () => {
     if (glucoseLevel.trim() !== '') {
@@ -21,7 +33,7 @@ const GlucoseTracker = () => {
       setGlucoseLevel('');
     }
   };
-  
+
   const handleViewGlucoseEntry = () => {
     navigation.navigate('GlucoseEntry'); // Navigate to GlucoseEntry screen
   };
@@ -37,7 +49,7 @@ const GlucoseTracker = () => {
   const handlesignOutIconClick = () => {
     navigation.navigate('Patientlogin');
   };
-     
+
   const handleBellIconClick = () => {
     navigation.navigate('PatientNotification');
   };
@@ -54,11 +66,16 @@ const GlucoseTracker = () => {
       <View style={styles.container}>
         <View style={styles.upperContainer}>
           {/* Container above the buttons */}
-          <View style={styles.scrollImagesContainer}>
-            <Image source={require('./assets/scroll1.png')} style={[styles.scrollImage]} /> 
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            onScroll={(event) => setCurrentScrollPos(event.nativeEvent.contentOffset.x)}>
+            {/* Wrap images inside ScrollView horizontally */}
+            <Image source={require('./assets/scroll1.png')} style={[styles.scrollImage]} />
             <Image source={require('./assets/scroll2.png')} style={[styles.scrollImage]} />
             <Image source={require('./assets/scroll3.png')} style={[styles.scrollImage]} />
-          </View>
+          </ScrollView>
         </View>
         {/* Gray-colored container */}
         <View style={styles.grayContainer}>
@@ -111,9 +128,9 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingTop: windowHeight * 0.05,
     paddingHorizontal: windowWidth * 0.05,
-    backgroundColor: 'red',
+    backgroundColor: '#603F83FF',
     borderBottomWidth: 0,
-    borderBottomColor: 'black',
+    borderBottomColor: '#FFFFFF',
     height: windowHeight * 0.14,
     justifyContent: 'center',
     alignItems: 'center',
@@ -129,27 +146,28 @@ const styles = StyleSheet.create({
   upperContainer: {
     marginBottom: windowHeight * 0.10, // Adjust the marginBottom to provide spacing between the container and buttons
     backgroundColor: '#BBB7B7',
-    borderRadius: 10,
-    width: '50%',
-    paddingVertical: windowHeight * 0.030,
-    paddingHorizontal: windowWidth * 0.40,
+    borderRadius: 15,
+    width: '80%',
+    height: windowHeight * 0.2,
     top: windowHeight * 0.04,
   },
   scrollImagesContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.25, 
-    height: windowWidth * 0.25,
-    paddingHorizontal: windowWidth * 0.01, // Adjusted padding
+    width: windowWidth * 0.45,
+    height: windowWidth * 0.55,
   },
   scrollImage: {
     resizeMode: 'contain',
-    width: windowWidth * 0.25, 
-    height: windowWidth * 0.25,
+    width: windowWidth * 0.75, // Adjust width as needed
+    height: windowWidth * 0.42, // Adjust height as needed
+    marginRight: windowWidth * 0.02, // Adjust spacing between images
+    borderRadius: 15, // Set border radius
+    overflow: 'hidden', // Ensure image stays within border radius
   },
   button: {
     marginBottom: windowHeight * 0.03, // Adjust the marginBottom to provide spacing between button
-    backgroundColor: '#D73636',
+    backgroundColor: '#603F83FF',
     borderRadius: 10,
     paddingVertical: windowHeight * 0.0125,
     paddingHorizontal: windowWidth * 0.15, // Change the width of the button
@@ -159,12 +177,12 @@ const styles = StyleSheet.create({
   GlucoseEntryButton: {
     marginBottom: windowHeight * 0.04, // Adjust the marginBottom to provide spacing between buttons
     height: windowHeight * 0.07,
-    width: windowWidth* 0.75
+    width: windowWidth * 0.75
   },
   glucoseTrackerButton: {
-    marginBottom: windowHeight * 0.03, // Adjust the marginBottom to provide spacing between 
+    marginBottom: windowHeight * 0.03, // Adjust the marginBottom to provide spacing between
     height: windowHeight * 0.07,
-    width: windowWidth* 0.76
+    width: windowWidth * 0.76
   },
   buttonText: {
     color: 'white',
@@ -180,14 +198,14 @@ const styles = StyleSheet.create({
     marginBottom: windowHeight * 0.01,
   },
   additionalGrayContainer: {
-    backgroundColor: '#D73636',
+    backgroundColor: '#603F83FF',
     borderRadius: 20,
     width: '60%',
     paddingVertical: windowHeight * -0.01,
     paddingHorizontal: windowWidth * 0.40,
     marginBottom: windowHeight * 0.025,
     top: windowHeight * 0.27,
-    height: windowHeight* 0.09,
+    height: windowHeight * 0.09,
     // styles for additional gray container
   },
   grayContainer: {
@@ -218,15 +236,15 @@ const styles = StyleSheet.create({
     height: 40, // Adjust height of the icon
     marginRight: 10, // Adjust spacing between icons if needed
     color: '#000000', // Color of the home icon
-    right: windowWidth* 0.3,
-    top: windowHeight* 0.025
+    right: windowWidth * 0.3,
+    top: windowHeight * 0.025
   },
   bellIcon: {
     width: 40, // Adjust width of the icon
     height: 40, // Adjust height of the icon
     marginRight: 10, // Adjust spacing between icons if needed
     color: '#000000', // Color of the bell icon
-    top: windowHeight* -0.022,
+    top: windowHeight * -0.022,
     right: windowWidth * 0.015
   },
   signOutIcon: {
@@ -234,13 +252,13 @@ const styles = StyleSheet.create({
     height: 40, // Adjust height of the icon
     marginRight: 10, // Adjust spacing between icons if needed
     color: '#000000', // Color of the sign-out icon
-    left: windowWidth* 0.25,
-    top: windowHeight* -0.077,
+    left: windowWidth * 0.25,
+    top: windowHeight * -0.077,
   },
   heading: {
     fontSize: 30, // Adjust the font size as needed
     fontWeight: 'bold',
-    left: windowWidth* 0.34,
+    left: windowWidth * 0.34,
   },
   profileIcon: {
     color: '#000000',
