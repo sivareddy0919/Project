@@ -14,7 +14,7 @@ const WelcomePage = () => {
     <View style={styles.container}>
       <Text style={styles.heading}> Welcome to Sugar Smart</Text>
       <Image
-        source={require('./assets/scroll3.png')} // Replace './path/to/blood_drop_icon.png' with the actual path to your blood drop icon
+        source={require('./assets/Blood.png')} // Replace './path/to/blood_drop_icon.png' with the actual path to your blood drop icon
         style={styles.icon}
       />
       <View style={styles.content}>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontSize: Dimensions.get('window').height * 0.03,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: Dimensions.get('window').height * 0.05, // Reduced margin for the blood drop icon
+    marginBottom: Dimensions.get('window').height * 0.19, // Reduced margin for the blood drop icon
   },
   icon: {
     width: Dimensions.get('window').height * 0.200, // Adjust size as needed
@@ -48,11 +48,11 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Center align content
   },
   button: {
-    backgroundColor: '#D73636',
+    backgroundColor: '#603F83FF',
     borderRadius: Dimensions.get('window').height * 0.07,
     paddingVertical: Dimensions.get('window').height * 0.010,
     paddingHorizontal: Dimensions.get('window').width * 0.175,
-    top:Dimensions.get('window').width * 0.25,
+    top:Dimensions.get('window').width * 0.20,
   },
   buttonText: {
     fontSize: Dimensions.get('window').height * 0.03,
