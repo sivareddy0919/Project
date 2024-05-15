@@ -9,7 +9,7 @@ const PatientLogin = () => {
 
   const handleLogin = () => {
     // Perform your login logic here
-    const loginApiUrl = 'http://192.168.229.121/database/Patientlogin.php';
+    const loginApiUrl = 'http://172.18.21.9/Database/patientlogin.php';
     
     fetch(loginApiUrl, {
       method: 'POST',
@@ -18,18 +18,23 @@ const PatientLogin = () => {
       },
       body: JSON.stringify({ username, password }),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         console.log('Login Response:', data);
         if (data.status === 'success') {
           Alert.alert('Login successful!');
-          navigation.navigate('Duplicate', { username}); // Navigate to the Duplicate screen with username parameter
+          navigation.navigate('Duplicate', { username }); // Navigate to the Duplicate screen with username parameter
         } else {
           Alert.alert('Invalid username or password. Please try again.');
         }
       })
       .catch(error => {
-        console.error('Login Error:', error);
+        console.error('Fetch Error:', error);
         Alert.alert('Login failed. Please try again later.');
       });
   };
@@ -86,7 +91,7 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingTop: windowHeight * 0.05,
     paddingHorizontal: windowWidth * 0.05,
-    backgroundColor: 'red',
+    backgroundColor: '#603F83FF',
     borderBottomWidth: 0,
     borderBottomColor: 'black',
     height: windowHeight * 0.14,
@@ -116,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BBB7B7', // Light grey background color
   },
   button: {
-    backgroundColor: '#D73636',
+    backgroundColor: '#603F83FF',
     borderRadius: 20,
     paddingVertical: 12,
     paddingHorizontal: windowWidth * 0.1,
