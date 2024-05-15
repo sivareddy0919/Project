@@ -9,7 +9,7 @@ const DoctorLogin = () => {
 
   const handleLogin = () => {
     // Perform your login logic here
-    const loginApiUrl = 'http://192.168.229.121/database/Doctorlogin.php';
+    const loginApiUrl = 'http://172.18.21.9/Database/Doctorlogin.php';
     
     fetch(loginApiUrl, {
       method: 'POST',
@@ -18,7 +18,12 @@ const DoctorLogin = () => {
       },
       body: JSON.stringify({ username, password }),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         console.log('Login Response:', data);
         if (data.status === 'success') {
@@ -33,6 +38,7 @@ const DoctorLogin = () => {
         Alert.alert('Login failed. Please try again later.');
       });
   };
+  
   return (
     <View style={styles.mainContainer}>
       <View style={styles.topContainer}>
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingTop: windowHeight * 0.05,
     paddingHorizontal: windowWidth * 0.05,
-    backgroundColor: 'red',
+    backgroundColor: '#603F83FF',
     borderBottomWidth: 0,
     borderBottomColor: 'black',
     height: windowHeight * 0.14,
@@ -106,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BBB7B7', // Light grey background color
   },
   button: {
-    backgroundColor: '#D73636',
+    backgroundColor: '#603F83FF',
     borderRadius: 20,
     paddingVertical: 12,
     paddingHorizontal: windowWidth * 0.1,
