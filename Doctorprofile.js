@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingTop: 20,
     paddingRight: 30,
-    backgroundColor: 'red',
+    backgroundColor: '#603F83FF',
     borderBottomColor: 'black',
     height: windowHeight * 0.15,
     justifyContent: 'center',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     width: '30%',
     marginTop: windowHeight * 0.02,
     marginRight: windowHeight * 0.09,
-    backgroundColor: '#D73636',
+    backgroundColor: '#603F83FF',
     borderRadius: windowWidth * 0.03,
     paddingVertical: windowWidth * 0.03,
     paddingHorizontal: windowWidth * 0.010,
