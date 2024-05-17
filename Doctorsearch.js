@@ -1,29 +1,71 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TextInput, Image, Alert, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; // Assuming you're using Expo for vector icons
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const DoctorSearch = () => {
+  const [searchText, setSearchText] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = () => {
+    const searchApiUrl = 'http://192.168.177.121/Database/Doctorsearch.php'; // Your API endpoint
+
+    fetch(searchApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: searchText }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === 'error') {
+          throw new Error(data.message);
+        }
+        console.log('Search Result:', data);
+        setSearchResults(data.patients); // Assuming the API returns an array of patient objects under the 'patients' key
+      })
+      .catch(error => {
+        console.error('Search Error:', error);
+        Alert.alert('Search failed', error.message);
+      });
+  };
+
+  const renderPatientItem = ({ item }) => (
+    <View style={styles.additionalContainer}>
+      <Image source={require('./assets/PatientIcon.png')} style={styles.image} />
+      <Text style={styles.patientName}>Patient Name: {item.name}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        {/* Content of the container at the top */}
-        <Text style={styles.heading}> </Text>
+        <Text style={styles.heading}>Doctor Search</Text>
       </View>
       <View style={styles.searchContainer}>
         <MaterialIcons name="search" size={windowWidth * 0.06} color="black" style={styles.searchIcon} />
         <TextInput
           placeholder="Search patients..."
           style={styles.searchInput}
-          // Add onChangeText handler to handle search logic
+          value={searchText}
+          onChangeText={text => setSearchText(text)}
+          onSubmitEditing={handleSearch}
         />
       </View>
-      {/* Additional Containers */}
-      <View style={styles.additionalContainer1} />
-      <View style={styles.additionalContainer2} />
-      <View style={styles.additionalContainer3} />
+      <FlatList
+        data={searchResults}
+        renderItem={renderPatientItem}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.resultContainer}
+      />
     </View>
   );
 };
@@ -37,7 +79,7 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingTop: windowHeight * 0.02,
     paddingRight: windowWidth * 0.05,
-    backgroundColor: 'red',
+    backgroundColor: '#603F83FF',
     borderBottomColor: 'black',
     height: windowHeight * 0.15,
     justifyContent: 'center',
@@ -47,7 +89,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: windowWidth * 0.06,
     fontWeight: 'bold',
-    color: '#000000', // Change text color to white
+    color: '#000000',
   },
   searchContainer: {
     flexDirection: 'row',
@@ -67,32 +109,32 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.04,
     paddingVertical: windowHeight * 0.015,
   },
-  additionalContainer1: {
-    marginBottom: windowHeight * 0.10, // Adjust the marginBottom to provide spacing between the container and buttons
-    backgroundColor: '#BBB7B7',
-    borderRadius: 10,
-    width: '50%',
-    paddingVertical: windowHeight * 0.090,
-    paddingHorizontal: windowWidth * 0.40,
-    top: windowHeight * 0.01,
+  resultContainer: {
+    marginTop: windowHeight * 0.05,
+    width: '100%',
+    alignItems: 'center',
   },
-  additionalContainer2: {
-    marginBottom: windowHeight * 0.10, // Adjust the marginBottom to provide spacing between the container and buttons
+  additionalContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: windowHeight * 0.05,
     backgroundColor: '#BBB7B7',
     borderRadius: 10,
-    width: '50%',
-    paddingVertical: windowHeight * 0.090,
-    paddingHorizontal: windowWidth * 0.40,
-    top: windowHeight * -0.04,
+    width: '100%',
+    paddingVertical: windowHeight * 0.04,
+    paddingHorizontal: windowWidth * 0.08,
   },
-  additionalContainer3: {
-    marginBottom: windowHeight * 0.10, // Adjust the marginBottom to provide spacing between the container and buttons
-    backgroundColor: '#BBB7B7',
-    borderRadius: 10,
-    width: '50%',
-    paddingVertical: windowHeight * 0.090,
-    paddingHorizontal: windowWidth * 0.40,
-    top: windowHeight * -0.09,
+  image: {
+    width: windowWidth * 0.2,
+    height: windowWidth * 0.2,
+    borderRadius: windowWidth * 0.1,
+    marginRight: windowWidth * 0.04,
+    left:windowWidth *-0.06
+  },
+  patientName: {
+    fontSize: windowWidth * 0.05,
+    color: 'black',
+    left: windowWidth * -0.09,
   },
 });
 
