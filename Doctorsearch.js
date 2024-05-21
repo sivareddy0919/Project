@@ -10,7 +10,7 @@ const DoctorSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = () => {
-    const searchApiUrl = 'http://192.168.177.121/Database/Doctorsearch.php'; // Your API endpoint
+    const searchApiUrl = 'http://192.168.1.7/Database/Doctorsearch.php'; // Your API endpoint
 
     fetch(searchApiUrl, {
       method: 'POST',
