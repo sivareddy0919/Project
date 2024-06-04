@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TextInput, Image, Alert, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TextInput, Image, Alert, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; // Assuming you're using Expo for vector icons
 
 const windowWidth = Dimensions.get('window').width;
@@ -10,14 +10,14 @@ const DoctorSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = () => {
-    const searchApiUrl = 'http://192.168.1.7/Database/Doctorsearch.php'; // Your API endpoint
+    const searchApiUrl = 'http://192.168.31.121/Database/Doctorsearch.php'; // Your API endpoint
 
     fetch(searchApiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username: searchText }),
+      body: JSON.stringify({ username: searchText }), // Ensure the key 'username' is used here
     })
       .then(response => {
         if (!response.ok) {
@@ -30,7 +30,7 @@ const DoctorSearch = () => {
           throw new Error(data.message);
         }
         console.log('Search Result:', data);
-        setSearchResults(data.patients); // Assuming the API returns an array of patient objects under the 'patients' key
+        setSearchResults(data.doctors); // Assuming the API returns an array of doctor objects under the 'doctors' key
       })
       .catch(error => {
         console.error('Search Error:', error);
@@ -38,10 +38,10 @@ const DoctorSearch = () => {
       });
   };
 
-  const renderPatientItem = ({ item }) => (
+  const renderDoctorItem = ({ item }) => (
     <View style={styles.additionalContainer}>
       <Image source={require('./assets/PatientIcon.png')} style={styles.image} />
-      <Text style={styles.patientName}>Patient Name: {item.name}</Text>
+      <Text style={styles.doctorName}>Doctor Name: {item.name}</Text>
     </View>
   );
 
@@ -53,7 +53,7 @@ const DoctorSearch = () => {
       <View style={styles.searchContainer}>
         <MaterialIcons name="search" size={windowWidth * 0.06} color="black" style={styles.searchIcon} />
         <TextInput
-          placeholder="Search patients..."
+          placeholder="Search Patients..."
           style={styles.searchInput}
           value={searchText}
           onChangeText={text => setSearchText(text)}
@@ -62,7 +62,7 @@ const DoctorSearch = () => {
       </View>
       <FlatList
         data={searchResults}
-        renderItem={renderPatientItem}
+        renderItem={renderDoctorItem}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.resultContainer}
       />
@@ -120,21 +120,19 @@ const styles = StyleSheet.create({
     marginBottom: windowHeight * 0.05,
     backgroundColor: '#BBB7B7',
     borderRadius: 10,
-    width: '100%',
-    paddingVertical: windowHeight * 0.04,
-    paddingHorizontal: windowWidth * 0.08,
+    width: '90%', // Adjusted width to fit better
+    paddingVertical: windowHeight * 0.02,
+    paddingHorizontal: windowWidth * 0.12,
   },
   image: {
     width: windowWidth * 0.2,
     height: windowWidth * 0.2,
     borderRadius: windowWidth * 0.1,
     marginRight: windowWidth * 0.04,
-    left:windowWidth *-0.06
   },
-  patientName: {
+  doctorName: {
     fontSize: windowWidth * 0.05,
     color: 'black',
-    left: windowWidth * -0.09,
   },
 });
 
