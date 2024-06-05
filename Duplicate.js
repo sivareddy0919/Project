@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; // Import FontAwesome icons
-import { useNavigation, useRoute } from '@react-navigation/native'; // Import useNavigation and useRoute hooks
+import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-const GlucoseTracker = () => {
-  const navigation = useNavigation(); // Initialize navigation object
-  const route = useRoute(); // Initialize route object
-  const { username } = route.params; // Extract username from route params
+const PatientDashboard = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { username } = route.params;
   const [glucoseEntries, setGlucoseEntries] = useState([]);
   const [glucoseLevel, setGlucoseLevel] = useState('');
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Scroll images programmatically
       scrollViewRef.current?.scrollTo({ x: currentScrollPos + 1, animated: true });
-    }, 1000); // Scroll every 1 second
+    }, 1000);
 
-    return () => clearInterval(interval); // Clean up interval on unmount
-  }, []);
+    return () => clearInterval(interval);
+  }, [currentScrollPos]);
 
   const scrollViewRef = React.useRef();
   const [currentScrollPos, setCurrentScrollPos] = useState(0);
@@ -34,16 +36,24 @@ const GlucoseTracker = () => {
     }
   };
 
+  const handleViewTodayButton = () => {
+    navigation.navigate('Todayrecord');
+  };
+
+  const handleViewYesterdayButton = () => {
+    navigation.navigate('Yesterdayrecord');
+  };
+
   const handleViewGlucoseEntry = () => {
-    navigation.navigate('GlucoseEntry'); // Navigate to GlucoseEntry screen
+    navigation.navigate('GlucoseEntry');
   };
 
   const handleGlucoseTracker = () => {
-    navigation.navigate('GlucoseTracker'); // Navigate to GlucoseTracker screen
+    navigation.navigate('GlucoseTracker');
   };
 
   const handleProfileNavigation = () => {
-    navigation.navigate('Patientprofile'); // Navigate to PatientProfile screen
+    navigation.navigate('Patientprofile');
   };
 
   const handlesignOutIconClick = () => {
@@ -54,10 +64,24 @@ const GlucoseTracker = () => {
     navigation.navigate('PatientNotification');
   };
 
+  const handleDateButton = () => {
+    setIsDatePickerVisible(true);
+  };
+
+  const handleDateConfirm = (date) => {
+    const formattedDate = date.toISOString().split('T')[0];
+    setSelectedDate(formattedDate);
+    setIsDatePickerVisible(false);
+    navigation.navigate('DateScreen', { selectedDate: formattedDate });
+  };
+
+  const handleDateCancel = () => {
+    setIsDatePickerVisible(false);
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.topContainer}>
-        {/* Content of the container at the top */}
         <Text style={styles.heading}>{username}</Text>
         <TouchableOpacity onPress={handleProfileNavigation}>
           <FontAwesome name="user-circle-o" size={35} style={styles.profileIcon} />
@@ -65,36 +89,30 @@ const GlucoseTracker = () => {
       </View>
       <View style={styles.container}>
         <View style={styles.upperContainer}>
-          {/* Container above the buttons */}
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             ref={scrollViewRef}
             onScroll={(event) => setCurrentScrollPos(event.nativeEvent.contentOffset.x)}>
-            {/* Wrap images inside ScrollView horizontally */}
-            <Image source={require('./assets/scroll1.png')} style={[styles.scrollImage]} />
-            <Image source={require('./assets/scroll2.png')} style={[styles.scrollImage]} />
-            <Image source={require('./assets/scroll3.png')} style={[styles.scrollImage]} />
+            <Image source={require('./assets/scroll1.png')} style={styles.scrollImage} />
+            <Image source={require('./assets/scroll2.png')} style={styles.scrollImage} />
+            <Image source={require('./assets/scroll3.png')} style={styles.scrollImage} />
           </ScrollView>
         </View>
-        {/* Gray-colored container */}
         <View style={styles.grayContainer}>
-          {/* Content of the gray container */}
           <View style={styles.circleButtonContainer}>
-            <TouchableOpacity style={[styles.circleButton, {backgroundColor: '#D73636', width: 80, height: 80, borderRadius: 10}]}>
-              <Text style={[styles.buttonText, {fontSize: 14}]}>Today</Text>
+            <TouchableOpacity style={[styles.circleButton, { backgroundColor: '#D73636', width: 80, height: 80, borderRadius: 10 }]} onPress={handleViewTodayButton}>
+              <Text style={[styles.buttonText, { fontSize: 14 }]}>Today</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.circleButton, {backgroundColor: '#36D7D7', width: 80, height: 80, borderRadius: 10}]}>
-              <Text style={[styles.buttonText, {fontSize: 14}]}>Yesterday</Text>
+            <TouchableOpacity style={[styles.circleButton, { backgroundColor: '#36D7D7', width: 80, height: 80, borderRadius: 10 }]} onPress={handleViewYesterdayButton}>
+              <Text style={[styles.buttonText, { fontSize: 14 }]}>Yesterday</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.circleButton, {backgroundColor: '#36D736', width: 80, height: 80, borderRadius: 10}]}>
-              <Text style={[styles.buttonText, {fontSize: 14}]}>Date</Text>
+            <TouchableOpacity style={[styles.circleButton, { backgroundColor: '#36D736', width: 80, height: 80, borderRadius: 10 }]} onPress={handleDateButton}>
+              <Text style={[styles.buttonText, { fontSize: 14 }]}>Date</Text>
             </TouchableOpacity>
           </View>
         </View>
-        {/* End of Gray-colored container */}
         <View style={styles.additionalGrayContainer}>
-          {/* Content of the additional gray container */}
           <FontAwesome name="home" size={35} style={styles.homeIcon} />
           <FontAwesome name="bell" size={30} style={styles.bellIcon} onPress={handleBellIconClick} />
           <FontAwesome name="sign-out" size={35} style={styles.signOutIcon} onPress={handlesignOutIconClick} />
@@ -113,6 +131,12 @@ const GlucoseTracker = () => {
           ))}
         </ScrollView>
       </View>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleDateConfirm}
+        onCancel={handleDateCancel}
+      />
     </View>
   );
 };
@@ -134,17 +158,17 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.14,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row', // Align items in a row
-    justifyContent: 'space-between', // Space between items
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   container: {
     flex: 1,
     paddingHorizontal: windowWidth * 0.05,
-    justifyContent: 'center', // Add justifyContent to center buttons vertically
-    alignItems: 'center', // Center items horizontally
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   upperContainer: {
-    marginBottom: windowHeight * 0.10, // Adjust the marginBottom to provide spacing between the container and buttons
+    marginBottom: windowHeight * 0.10,
     backgroundColor: '#BBB7B7',
     borderRadius: 15,
     width: '80%',
@@ -159,28 +183,28 @@ const styles = StyleSheet.create({
   },
   scrollImage: {
     resizeMode: 'contain',
-    width: windowWidth * 0.75, // Adjust width as needed
-    height: windowWidth * 0.42, // Adjust height as needed
-    marginRight: windowWidth * 0.02, // Adjust spacing between images
-    borderRadius: 15, // Set border radius
-    overflow: 'hidden', // Ensure image stays within border radius
+    width: windowWidth * 0.75,
+    height: windowWidth * 0.42,
+    marginRight: windowWidth * 0.02,
+    borderRadius: 15,
+    overflow: 'hidden',
   },
   button: {
-    marginBottom: windowHeight * 0.03, // Adjust the marginBottom to provide spacing between button
+    marginBottom: windowHeight * 0.03,
     backgroundColor: '#603F83FF',
     borderRadius: 10,
     paddingVertical: windowHeight * 0.0125,
-    paddingHorizontal: windowWidth * 0.15, // Change the width of the button
+    paddingHorizontal: windowWidth * 0.15,
     alignItems: 'center',
     top: windowWidth * -0.17
   },
   GlucoseEntryButton: {
-    marginBottom: windowHeight * 0.04, // Adjust the marginBottom to provide spacing between buttons
+    marginBottom: windowHeight * 0.04,
     height: windowHeight * 0.07,
     width: windowWidth * 0.75
   },
   glucoseTrackerButton: {
-    marginBottom: windowHeight * 0.03, // Adjust the marginBottom to provide spacing between
+    marginBottom: windowHeight * 0.03,
     height: windowHeight * 0.07,
     width: windowWidth * 0.76
   },
@@ -206,20 +230,19 @@ const styles = StyleSheet.create({
     marginBottom: windowHeight * 0.025,
     top: windowHeight * 0.27,
     height: windowHeight * 0.09,
-    // styles for additional gray container
   },
   grayContainer: {
-    backgroundColor: '#BBB7B7',
+    backgroundColor: '#DDD',
     width: '88%',
     borderRadius: 10,
     paddingVertical: windowHeight * -0.1,
-    height: windowHeight * 0.2, // Adjust height as needed
+    height: windowHeight * 0.17,
     marginBottom: windowHeight * 0.02,
   },
   circleButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginTop: windowHeight * 0.05,
+    marginTop: windowHeight * 0.033,
   },
   circleButton: {
     justifyContent: 'center',
@@ -232,38 +255,38 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   homeIcon: {
-    width: 40, // Adjust width of the icon
-    height: 40, // Adjust height of the icon
-    marginRight: 10, // Adjust spacing between icons if needed
-    color: '#000000', // Color of the home icon
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    color: '#000000',
     right: windowWidth * 0.3,
     top: windowHeight * 0.025
   },
   bellIcon: {
-    width: 40, // Adjust width of the icon
-    height: 40, // Adjust height of the icon
-    marginRight: 10, // Adjust spacing between icons if needed
-    color: '#000000', // Color of the bell icon
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    color: '#000000',
     top: windowHeight * -0.022,
     right: windowWidth * 0.015
   },
   signOutIcon: {
-    width: 40, // Adjust width of the icon
-    height: 40, // Adjust height of the icon
-    marginRight: 10, // Adjust spacing between icons if needed
-    color: '#000000', // Color of the sign-out icon
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    color: '#000000',
     left: windowWidth * 0.25,
     top: windowHeight * -0.077,
   },
   heading: {
-    fontSize: 30, // Adjust the font size as needed
+    fontSize: 30,
     fontWeight: 'bold',
     left: windowWidth * 0.34,
   },
   profileIcon: {
     color: '#000000',
-    marginLeft: 'auto', // Push the icon to the right side
+    marginLeft: 'auto',
   },
 });
 
-export default GlucoseTracker;
+export default PatientDashboard;
