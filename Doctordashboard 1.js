@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -8,13 +8,12 @@ const GlucoseTracker = () => {
   const route = useRoute();
   const { username } = route.params;
 
-  const [glucoseEntries, setGlucoseEntries] = useState([]);
-  const [glucoseLevel, setGlucoseLevel] = useState('');
-
   const handleProfileNavigation = () => {
     navigation.navigate('Doctorprofile');
   };
-
+  const handlehomeIconClick = () => {
+    navigation.navigate('Patientlist');
+  };
   const handlesearchIconClick = () => {
     navigation.navigate('DoctorSearch');
   };
@@ -39,27 +38,17 @@ const GlucoseTracker = () => {
             <Image source={require('./assets/scroll3.png')} style={styles.image} />
           </ScrollView>
         </View>
-        <View style={styles.additionalContainer}>
-          {/* Content of the additional container */}
-        </View>
         <View style={styles.grayContainer}>
           {/* Content of the gray container */}
         </View>
         <View style={styles.additionalGrayContainer}>
           {/* Content of the additional gray container */}
-          <FontAwesome name="home" size={35} style={styles.homeIcon} />
+          <FontAwesome name="home" size={35} style={styles.homeIcon} onPress={handlehomeIconClick} />
           <FontAwesome name="search" size={32} style={styles.searchIcon} onPress={handlesearchIconClick} />
           <FontAwesome name="sign-out" size={35} style={styles.signOutIcon} onPress={handlesignOutIconClick} />
         </View>
-        <View style={styles.newContainer}>
-          {/* Content of the new container */}
-        </View>
         <ScrollView style={styles.scrollView}>
-          {glucoseEntries.map(entry => (
-            <Text key={entry.id} style={styles.entryText}>
-              {entry.timestamp}: {entry.level} mg/dL
-            </Text>
-          ))}
+          {/* Additional content if needed */}
         </ScrollView>
       </View>
     </View>
@@ -83,51 +72,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  container: {
-    flex: 1,
-    paddingHorizontal: windowWidth * 0.05,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   upperContainer: {
-    marginTop: windowHeight *-0.07,
+    marginTop: windowHeight * -0.09,
     borderRadius: 10,
-    width: '80%',
+    width: '90%',
     paddingVertical: windowHeight * 0.080,
     paddingHorizontal: windowWidth * -0.010,
     top: windowHeight * 0.04,
-  },
-  additionalContainer: {
-    marginBottom: windowHeight * 0.02,
+    left: windowWidth * 0.05,
   },
   grayContainer: {
     backgroundColor: '#DDD',
     borderRadius: 10,
     width: '90%',
-    paddingVertical: windowHeight * 0.02,
+    paddingVertical: windowHeight * 0.07,
     marginBottom: windowHeight * 0.02,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: windowWidth * 0.05,
+    alignItems: 'center',
+    left: windowWidth * 0.05,
   },
   additionalGrayContainer: {
     backgroundColor: '#603F83FF',
-    borderRadius: 20,
-    width: '100%',
+    borderRadius: 15,
+    width: '90%',
     paddingVertical: windowHeight * 0.022,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: windowWidth * 0.1,
-    marginBottom: windowHeight * 0.02,
-  },
-  newContainer: {
-    backgroundColor: '#BBB7B7',
-    borderRadius: 10,
-    width: '90%',
-    paddingVertical: windowHeight * 0.15,
-    marginBottom: windowHeight * 0.04,
+    marginTop: windowHeight * 0.32,
+    left: windowWidth * 0.06,
   },
   homeIcon: {
     color: '#000000',
-    
   },
   searchIcon: {
     color: '#000000',
@@ -136,9 +115,10 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   heading: {
-    fontSize: 24,
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#FFFFFF',
+    marginLeft: windowHeight * 0.17,
   },
   profileIcon: {
     color: '#000000',
@@ -148,17 +128,13 @@ const styles = StyleSheet.create({
   },
   image: {
     width: windowWidth * 0.9,
-    height: 150,
+    height: windowHeight * 0.20,
     marginHorizontal: 10,
     borderRadius: 10,
   },
   scrollView: {
     width: '100%',
     flex: 1,
-  },
-  entryText: {
-    fontSize: 18,
-    marginBottom: 10,
   },
 });
 
